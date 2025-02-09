@@ -1,0 +1,19 @@
+﻿@model IEnumerable<ASP_MVC.Models.Comment.CommentListItem>
+
+<div class="comments-section">
+    <h3>Commentaires</h3>
+    @if (Model.Any())
+    {
+        foreach (var comment in Model)
+        {
+            <div class="comment">
+                <p><strong>@comment.CreatedBy</strong> <em>le @comment.CreatedAt.ToString("dd/MM/yyyy")</em></p>
+                <p>@comment.Content</p>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Aucun commentaire pour ce cocktail.</p>
+    }
+</div>

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ASP_MVC.Models.Cocktail.CocktailListItem>
+
+@{
+    ViewData["Title"] = "Index";
+    bool isConnected = sessionManager.ConnectedUser is not null;
+}
+
+@if(TempData.ContainsKey("ErrorMessage")){
+    <div class="alert alert-danger alert-dismissible show fade" role="alert">
+        <p>@TempData["ErrorMessage"]</p>
+        <button class="btn-close btn" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<h1>🍹Cocktails</h1>
+
+@if(isConnected){
+    <p>
+        <a asp-action="Create">Ajouter un cocktail</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @if(isConnected){
+                        <span>@Html.ActionLink("Modifier", "Edit", new { id = item.Cocktail_Id }) |</span>
+                }
+                    <span>@Html.ActionLink("Plus d'infos", "Details", new { id = item.Cocktail_Id })</span> 
+                @if(isConnected){
+                        <span>| @Html.ActionLink("Supprimer", "Delete", new { id = item.Cocktail_Id })</span>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<hr />
+<h1>Les cocktails récemments visités :</h1>
+<partial name="_CocktailListMin" model="@sessionManager.RecentlyVisitedCocktails"></partial>
